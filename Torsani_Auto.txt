@@ -1,0 +1,7 @@
+class Auto(Veicolo):
+    def __init__(self, marca, modello, anno, numero_porte):
+        super().__init__(marca, modello, anno)
+        self.numero_porte = numero_porte
+
+    def descrizione(self):
+        return f"{super().descrizione()} con {self.numero_porte} porte"
