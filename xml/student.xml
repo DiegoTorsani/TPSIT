@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rubrica xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../schema/rubrica.xsd">
+  <studente>
+    <nome>Matteo Matto</nome>
+    <votoPratico>5</votoPratico>
+    <votoTeorico>2.0</votoTeorico>
+    <media>3.5</media>
+    <insufficiente>sì</insufficiente>
+    <commento>Coglione</commento>
+  </studente>
+  <studente>
+    <nome>Luca Bianchi</nome>
+    <votoPratico>4.0</votoPratico>
+    <votoTeorico>5.0</votoTeorico>
+    <media>4.5</media>
+    <insufficiente>sì</insufficiente>
+    <commento>Insufficiente: necessita recupero.</commento>
+  </studente>
+  <studente>
+    <nome>Giulia Verdi</nome>
+    <votoPratico>8.0</votoPratico>
+    <votoTeorico>8.5</votoTeorico>
+    <media>8.25</media>
+    <insufficiente>no</insufficiente>
+    <commento>Ottima prestazione complessiva.</commento>
+  </studente>
+</rubrica>

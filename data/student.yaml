@@ -1,0 +1,19 @@
+studenti:
+  - nome: "Matteo Matto"
+    voto_pratico: 5
+    voto_teorico: 2.0
+    media: 3.5
+    insufficiente: "sì"
+    commento: "Coglione"
+  - nome: "Luca Bianchi"
+    voto_pratico: 4.0
+    voto_teorico: 5.0
+    media: 4.5
+    insufficiente: "sì"
+    commento: "Insufficiente: necessita recupero."
+  - nome: "Giulia Verdi"
+    voto_pratico: 8.0
+    voto_teorico: 8.5
+    media: 8.25
+    insufficiente: "no"
+    commento: "Ottima prestazione complessiva."
