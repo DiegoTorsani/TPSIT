@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <style>
+        input, select, button {
+            font-size: 1em;
+            padding: 0.5em;
+            margin-top: 0.2em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserisci Libro - Biblioteca</title>
+</head>
+<body>
+    <div class="container" style="max-width: 600px; margin: auto; padding: 1em;">
+        <h1>Inserisci Libro</h1>
+        
+        <div id="message" class="message"></div>
+
+        <form id="bookForm">
+            <div class="form-group">
+                <label for="titolo">Titolo *</label>
+                <input type="text" id="titolo" name="titolo" required placeholder="Inserisci il titolo del libro">
+            </div>
+
+            <div class="form-group">
+                <label for="autore">Autore *</label>
+                <input type="text" id="autore" name="autore" required placeholder="Nome dell'autore">
+            </div>
+
+            <div class="form-group">
+                <label for="anno">Anno di pubblicazione *</label>
+                <input type="number" id="anno" name="anno" required min="1000" max="2026" placeholder="Es: 2023">
+            </div>
+
+            <div class="form-group">
+                <label for="genere">Genere</label>
+                <select id="genere" name="genere">
+                    <option value=""></option>
+                    <option value="Narrativa">Narrativa</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Fantascienza">Fantascienza</option>
+                    <option value="Giallo">Giallo</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Romanzo storico">Romanzo storico</option>
+                    <option value="Biografia">Biografia</option>
+                    <option value="Saggistica">Saggistica</option>
+                    <option value="Poesia">Poesia</option>
+                    <option value="Altro">Altro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" name="isbn" placeholder="Codice ISBN (opzionale)">
+            </div>
+
+            <div class="form-group">
+                <label for="pagine">Numero di pagine</label>
+                <input type="number" id="pagine" name="pagine" min="1" placeholder="Numero di pagine">
+            </div>
+
+            <button type="submit">Aggiungi Libro</button>
+        </form>
+
+        <a href="biblioteca.html" class="nav-link">Visualizza Biblioteca →</a>
+
+    </div>
+
+    <script>
+        // Chiave per localStorage
+        const STORAGE_KEY = 'biblioteca';
+
+        // Inizializza la biblioteca se non esiste
+        function initBiblioteca() {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                const bibliotecaIniziale = {
+                    metadata: {
+                        nome: "La Mia Biblioteca",
+                        descrizione: "Collezione personale di libri",
+                        versione: "1.0.0",
+                        dataCreazione: new Date().toISOString(),
+                        ultimaModifica: new Date().toISOString()
+                    },
+                    libri: []
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(bibliotecaIniziale));
+            }
+        }
+
+        // Legge la biblioteca
+        function leggiBiblioteca() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : { metadata: {}, libri: [] };
+        }
+
+        // Salva la biblioteca
+        function salvaBiblioteca(biblioteca) {
+            biblioteca.metadata.ultimaModifica = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(biblioteca));
+        }
+
+        // Mostra messaggio
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Gestione submit form
+        document.getElementById('bookForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const biblioteca = leggiBiblioteca();
+            
+            const nuovoLibro = {
+                id: Date.now(),
+                titolo: document.getElementById('titolo').value.trim(),
+                autore: document.getElementById('autore').value.trim(),
+                anno: parseInt(document.getElementById('anno').value),
+                genere: document.getElementById('genere').value || null,
+                isbn: document.getElementById('isbn').value.trim() || null,
+                pagine: document.getElementById('pagine').value ? parseInt(document.getElementById('pagine').value) : null,
+                dataInserimento: new Date().toISOString()
+            };
+
+            biblioteca.libri.push(nuovoLibro);
+            salvaBiblioteca(biblioteca);
+
+            showMessage('✅ Libro aggiunto con successo!', 'success');
+            this.reset();
+        });
+
+        // Inizializza all'avvio
+        initBiblioteca();
+    </script>
+</body>
+</html>
