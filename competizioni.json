@@ -1,0 +1,124 @@
+[
+  {
+    "id": "C001",
+    "nome_ufficiale": "Sagra della Salsiccia 2026",
+    "data_inizio": "2026-05-10",
+    "data_fine": "2026-05-12",
+    "impianto": "Stadio Comunale di Misano",
+    "quota_iscrizione": 20.00,
+    "atleti": [
+      {
+        "id": "A1",
+        "nome": "Federico",
+        "cognome": "Di Luca",
+        "data_nascita": "2002-04-15",
+        "nazionalita": "Italia",
+        "disciplina": "Corsa"
+      },
+      {
+        "id": "A2",
+        "nome": "Marco",
+        "cognome": "Dell'Agata",
+        "data_nascita": "1998-09-02",
+        "nazionalita": "Italia",
+        "disciplina": "Corsa"
+      }
+    ],
+    "gare": [
+      {
+        "id": "G1",
+        "titolo": "100 metri uomini - finale",
+        "data_ora_inizio": "2026-05-10T16:00",
+        "durata": "00:10",
+        "categoria": "Senior",
+        "descrizione": "Finale maschile 100m su pista regolamentare.",
+        "partecipanti": ["A1", "A2"],
+        "risultati": [
+          { "partecipante_id": "A2", "posizione": 1, "punteggio": 10.12 },
+          { "partecipante_id": "A1", "posizione": 2, "punteggio": 10.34 }
+        ]
+      },
+      {
+        "id": "G2",
+        "titolo": "Spartar Race",
+        "data_ora_inizio": "2026-05-11T11:00",
+        "durata": "00:25",
+        "categoria": "Senior",
+        "descrizione": "Corsa a ostacoli con ostacoli naturali e artificiali su un percorso di 5 km.",
+        "partecipanti": ["T1"],
+        "risultati": [
+          { "partecipante_id": "T1", "posizione": 1, "punteggio": 42.50 }
+        ]
+      }
+    ],
+    "servizi": [
+      {
+        "nome": "Assistenza Medica Centrale",
+        "tipologia": "assistenza medica",
+        "posizione": 1,
+        "orari_disponibilita": [ { "inizio": "08:00", "fine": "20:00" } ]
+      },
+      {
+        "nome": "Pizzeria da Canè",
+        "tipologia": "ristoro",
+        "posizione": 5,
+        "orari_disponibilita": [ { "inizio": "09:00", "fine": "18:00" } ]
+      }
+    ],
+    "giudici": [
+      { "nome": "Dario", "cognome": "Casali", "qualifica": "Arbitro Nazionale", "anni_esperienza": 12 },
+      { "nome": "Andrea", "cognome": "Marini", "qualifica": "Giudice di Gara", "anni_esperienza": 8 }
+    ]
+    },
+  {
+    "id": "C001",
+    "nome_ufficiale": "Palio del diano 2026",
+    "data_inizio": "2026-05-10",
+    "data_fine": "2026-05-12",
+    "impianto": "Stadio Comunale di Mondaino",
+    "quota_iscrizione": 20.00,
+    "squadre": [
+      {
+        "id": "S2",
+        "nome": "Team B",
+        "anno_fondazione": 2015,
+        "membri":[
+            { "nome": "Luca", "cognome": "Rossi", "data_nascita": "1995-03-20", "ruolo": "Atleta" },
+            { "nome": "Giulia", "cognome": "Bianchi", "data_nascita": "1997-07-12", "ruolo": "Atleta" }
+        ]
+      }
+    ],
+    "gare": [
+      {
+        "id": "G2",
+        "titolo": "Spartar Race",
+        "data_ora_inizio": "2026-05-11T11:00",
+        "durata": "00:25",
+        "categoria": "Senior",
+        "descrizione": "Corsa a ostacoli con ostacoli naturali e artificiali su un percorso di 5 km.",
+        "partecipanti": ["S2"],
+        "risultati": [
+          { "partecipante_id": "S2", "posizione": 1, "punteggio": 42.50 }
+        ]
+      }
+    ],
+    "servizi": [
+      {
+        "nome": "Assistenza Medica Centrale",
+        "tipologia": "assistenza medica",
+        "posizione": 1,
+        "orari_disponibilita": [ { "inizio": "08:00", "fine": "20:00" } ]
+      },
+      {
+        "nome": "Corrado",
+        "tipologia": "ristoro",
+        "posizione": 5,
+        "orari_disponibilita": [ { "inizio": "09:00", "fine": "18:00" } ]
+      }
+    ],
+    "giudici": [
+      { "nome": "Dario", "cognome": "Casali", "qualifica": "Arbitro Nazionale", "anni_esperienza": 12 },
+      { "nome": "Andrea", "cognome": "Marini", "qualifica": "Giudice di Gara", "anni_esperienza": 8 }
+    ]
+    }
+]
