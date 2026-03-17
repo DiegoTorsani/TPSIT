@@ -26,7 +26,6 @@ def main():
                 print(f"Server: {risposta.rstrip()}")
 
                 if msg == "FINE":
-                    # dopo aver inviato FINE il server risponde e chiude
                     break
 
     except ConnectionRefusedError:
