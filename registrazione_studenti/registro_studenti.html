@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registrazione Studente</title>
+  <style>
+    body{font-family:Arial, sans-serif;padding:20px;}
+    form, h1{max-width:700px;margin:0 auto;}
+    label{display:block;margin-top:12px;font-weight:600;}
+    input[type="text"], input[type="date"], input[type="number"], select, textarea {
+      width:100%;padding:8px;margin-top:6px;border:2px solid #ea00ff;border-radius:4px;box-sizing:border-box;
+      transition: border-color .12s, box-shadow .12s;
+    }
+    .controls{margin-top:12px;}
+    button{padding:8px 14px;margin-right:8px;}
+    .invalid{border-color:#1eff00 !important; box-shadow:0 0 0 4px rgba(179,0,0,0.06);}
+    #errors{margin-top:12px;color:rgb(0, 217, 255);background:#fff4f4;padding:8px;border-radius:4px;border:1px solid #f5c7c7;}
+    .error-item{margin:4px 0;}
+    .small{font-size:0.9em;color:#74c418;}
+  </style>
+</head>
+<body>
+  <h1>Registrazione Studente</h1>
+
+  <form id="regForm" novalidate>
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" type="text" placeholder="Nome">
+
+    <label for="cognome">Cognome</label>
+    <input id="cognome" name="cognome" type="text" placeholder="Cognome">
+
+    <label for="dataNascita">Data di nascita</label>
+    <input id="dataNascita" name="dataNascita" type="date">
+
+    <label for="cf">Codice fiscale</label>
+    <input id="cf" name="cf" type="text" maxlength="16" placeholder="16 caratteri alfanumerici">
+
+    <label for="classe">Classe</label>
+    <select id="classe" name="classe">
+      <option value="">-- Seleziona classe --</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+
+    <label for="sezione">Sezione</label>
+    <select id="sezione" name="sezione">
+      <option value="">-- Seleziona sezione --</option>
+      <option value="A">A</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+    </select>
+
+    <label>
+      <input id="ripetente" name="ripetente" type="checkbox"> Ripetente
+    </label>
+
+    <label for="anniRipetuti">Anni ripetuti</label>
+    <input id="anniRipetuti" name="anniRipetuti" type="number" min="1" max="10" placeholder="Se ripetente, inserire anni">
+
+    <label for="uscita">Uscita prevista</label>
+    <select id="uscita" name="uscita">
+      <option value="">-- Seleziona opzione --</option>
+      <option value="lavoro">Lavoro</option>
+      <option value="universita">Università</option>
+      <option value="apprendistato">Apprendistato</option>
+      <option value="altro">Altro</option>
+    </select>
+
+    <div class="controls">
+      <button id="submitBtn" type="submit">Invia</button>
+      <button type="reset">Reset</button>
+      <button id="openStudentsBtn" type="button">Apri elenco studenti (JSON)</button>
+    </div>
+
+    <div id="errors" aria-live="polite" style="display:none"></div>
+  </form>
+
+  <script>
+    (function(){
+      const STORAGE_KEY = 'students';
+      const form = document.getElementById('regForm');
+      const errorsDiv = document.getElementById('errors');
+      const openBtn = document.getElementById('openStudentsBtn');
+
+      const elems = {
+        nome: document.getElementById('nome'),
+        cognome: document.getElementById('cognome'),
+        dataNascita: document.getElementById('dataNascita'),
+        cf: document.getElementById('cf'),
+        classe: document.getElementById('classe'),
+        sezione: document.getElementById('sezione'),
+        ripetente: document.getElementById('ripetente'),
+        anniRipetuti: document.getElementById('anniRipetuti'),
+        uscita: document.getElementById('uscita')
+      };
+
+      function loadStudents() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        } catch { return []; }
+      }
+      function saveStudents(arr) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      }
+
+      function clearErrors() {
+        errorsDiv.style.display = 'none';
+        errorsDiv.innerHTML = '';
+        Object.values(elems).forEach(el => {
+          if (el && el.classList) el.classList.remove('invalid');
+        });
+      }
+
+      Object.values(elems).forEach(el => {
+        if (!el) return;
+        el.addEventListener('input', () => el.classList.remove('invalid'));
+        el.addEventListener('change', () => el.classList.remove('invalid'));
+        el.addEventListener('focus', () => el.classList.remove('invalid'));
+      });
+
+      function getSelectedValues(select) {
+        if (!select) return [];
+        if (select.multiple) {
+          return Array.from(select.options).filter(o => o.selected).map(o => o.value);
+        } else {
+          return select.value ? [select.value] : [];
+        }
+      }
+
+      function validate() {
+        const errs = [];
+        const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,}$/;
+        if (!elems.nome.value.trim() || !nameRegex.test(elems.nome.value.trim())) {
+          errs.push({field: 'nome', message: 'Nome non valido (min 2 lettere).'});
+        }
+        if (!elems.cognome.value.trim() || !nameRegex.test(elems.cognome.value.trim())) {
+          errs.push({field: 'cognome', message: 'Cognome non valido (min 2 lettere).'});
+        }
+
+        const dob = elems.dataNascita.value;
+        if (!dob) {
+          errs.push({field: 'dataNascita', message: 'Data di nascita obbligatoria.'});
+        } else {
+          const d = new Date(dob);
+          const today = new Date();
+          if (isNaN(d.getTime()) || d > today) {
+            errs.push({field: 'dataNascita', message: 'Data di nascita non valida o nel futuro.'});
+          } else {
+            const age = today.getFullYear() - d.getFullYear() - ( (today.getMonth()<d.getMonth() || (today.getMonth()===d.getMonth() && today.getDate()<d.getDate())) ? 1 : 0 );
+            if (age < 5 || age > 120) {
+              errs.push({field: 'dataNascita', message: 'Età non plausibile ('+age+' anni).'});
+            }
+          }
+        }
+
+        const cfVal = elems.cf.value.trim().toUpperCase();
+        if (!/^[A-Z0-9]{16}$/.test(cfVal)) {
+          errs.push({field: 'cf', message: 'Codice fiscale deve essere di 16 caratteri alfanumerici.'});
+        }
+
+        const selClassi = getSelectedValues(elems.classe);
+        if (selClassi.length === 0) {
+          errs.push({field: 'classe', message: 'Selezionare una classe.'});
+        }
+        const selSezioni = getSelectedValues(elems.sezione);
+        if (selSezioni.length === 0) {
+          errs.push({field: 'sezione', message: 'Selezionare una sezione.'});
+        }
+
+        if (elems.ripetente.checked) {
+          const ar = elems.anniRipetuti.value;
+          const n = Number(ar);
+          if (!ar || isNaN(n) || n < 1 || n > 10) {
+            errs.push({field: 'anniRipetuti', message: 'Inserire anni ripetuti (numero compreso tra 1 e 10).'});
+          }
+        }
+
+        const selUscita = getSelectedValues(elems.uscita);
+        if (selUscita.length === 0) {
+          errs.push({field: 'uscita', message: 'Selezionare un\'opzione di uscita.'});
+        }
+
+        return errs;
+      }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        clearErrors();
+        const errs = validate();
+
+        if (errs.length) {
+          errorsDiv.style.display = 'block';
+          errs.forEach(it => {
+            const el = elems[it.field];
+            if (el && el.classList) el.classList.add('invalid');
+            const p = document.createElement('div');
+            p.className = 'error-item';
+            p.textContent = it.field + ': ' + it.message;
+            errorsDiv.appendChild(p);
+          });
+          errorsDiv.scrollIntoView({behavior:'smooth', block:'center'});
+          return;
+        }
+
+        const student = {
+          nome: elems.nome.value.trim(),
+          cognome: elems.cognome.value.trim(),
+          dataNascita: elems.dataNascita.value,
+          codiceFiscale: elems.cf.value.trim().toUpperCase(),
+          classe: elems.classe.value,
+          sezione: elems.sezione.value,
+          ripetente: elems.ripetente.checked,
+          anniRipetuti: elems.ripetente.checked ? Number(elems.anniRipetuti.value) : 0,
+          uscita: elems.uscita.value,
+          registrazione: new Date().toISOString()
+        };
+
+        const students = loadStudents();
+        students.push(student);
+        saveStudents(students);
+
+        const prettySingle = JSON.stringify(student, null, 2);
+        const w = window.open('', '_blank');
+        const html = '<!doctype html><html><head><meta charset="utf-8"><title>Studente salvato (JSON)</title>' +
+                     '<style>body{font-family:monospace;padding:20px;background:#f7f7f7}pre{background:#fff;padding:16px;border:1px solid #ddd;border-radius:6px;white-space:pre-wrap}</style>' +
+                     '</head><body><h1>Studente salvato (JSON)</h1><pre>' + escapeHtml(prettySingle) + '</pre></body></html>';
+        w.document.open();
+        w.document.write(html);
+        w.document.close();
+      });
+
+      openBtn.addEventListener('click', function(){
+        const students = loadStudents();
+        const pretty = JSON.stringify(students, null, 2);
+        const blob = new Blob([pretty], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const w = window.open('', '_blank');
+        const html = '<!doctype html><html><head><meta charset="utf-8"><title>Elenco studenti (JSON)</title>' +
+                     '<style>body{font-family:monospace;padding:20px;background:#f7f7f7}pre{background:#fff;padding:16px;border:1px solid #ddd;border-radius:6px;white-space:pre-wrap} a.btn{display:inline-block;margin-bottom:12px;padding:8px 12px;background:#0078D4;color:#fff;text-decoration:none;border-radius:5px}</style>' +
+                     '</head><body><h1>Elenco studenti (JSON)</h1>' +
+                     '<a class="btn" href="' + url + '" download="students.json">Scarica JSON</a>' +
+                     '<pre>' + escapeHtml(pretty) + '</pre></body></html>';
+        w.document.open();
+        w.document.write(html);
+        w.document.close(); 
+        setTimeout(() => URL.revokeObjectURL(url), 20000);
+      });
+
+      function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+      }
+
+    })();
+  </script>
+</body>
+</html>
