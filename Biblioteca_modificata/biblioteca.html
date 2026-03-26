@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Biblioteca - Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form, h1 { max-width: 600px; margin: 0 auto; }
+    label { display:block; margin-top:12px; font-weight:600; }
+    input, select, textarea, button{
+      width:100%; padding:8px; margin-top:6px;
+      border:2px solid #ccc; border-radius:4px;
+      box-sizing:border-box; transition: border-color .12s, box-shadow .12s;
+      background:#fff;
+    }
+    .mouse-selected {
+      border-color: #ffb3b3 !important;
+    }
+    .focus-selected {
+      border-color: #8b0000 !important;
+      box-shadow: 0 0 0 4px rgba(139,0,0,0.08);
+      outline: none;
+    }
+    button { width:auto; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>Modello form Biblioteca</h1>
+
+  <form id="bibliotecaForm" action="#" novalidate>
+    <label for="titolo">Titolo</label>
+    <input id="titolo" name="titolo" type="text" placeholder="Inserisci il titolo">
+
+    <label for="autore">Autore</label>
+    <input id="autore" name="autore" type="text" placeholder="Cognome Nome">
+
+    <label for="genere">Genere</label>
+    <select id="genere" name="genere">
+      <option value="">Seleziona</option>
+      <option>Romanzo</option>
+      <option>Saggistica</option>
+      <option>Poesia</option>
+    </select>
+
+    <label for="descrizione">Descrizione</label>
+    <textarea id="descrizione" name="descrizione" rows="4" placeholder="Breve descrizione"></textarea>
+
+    <div style="margin-top:12px;">
+      <button type="submit">Invia</button>
+      <button type="reset">Reset</button>
+    </div>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('bibliotecaForm');
+      const elems = form.querySelectorAll('input, select, textarea, button');
+
+      elems.forEach(el => {
+        el.addEventListener('click', (ev) => {
+          elems.forEach(x => x.classList.remove('mouse-selected'));
+          el.classList.add('mouse-selected');
+        });
+
+        el.addEventListener('focus', () => {
+          el.classList.remove('mouse-selected');
+          el.classList.add('focus-selected');
+        });
+
+        el.addEventListener('blur', () => {
+          el.classList.remove('focus-selected');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#bibliotecaForm')) {
+          elems.forEach(x => x.classList.remove('mouse-selected'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>
