@@ -224,6 +224,8 @@
         students.push(student);
         saveStudents(students);
 
+        form.reset();
+
         const prettySingle = JSON.stringify(student, null, 2);
         const w = window.open('', '_blank');
         const html = '<!doctype html><html><head><meta charset="utf-8"><title>Studente salvato (JSON)</title>' +
