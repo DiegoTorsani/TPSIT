@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Risultati per {{ termine }}</title></head>
+<body>
+    <h1>Risultati per: "{{ termine }}"</h1>
+    <ul>
+        {% for c in comuni %}
+        <li>
+            <a href="{{ url_for('dettaglio', comune_id=c.ID) }}">{{ c.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if not comuni %}<p>Nessun risultato trovato.</p>{% endif %}
+    <a href="/">Torna alla ricerca</a>
+</body>
+</html>

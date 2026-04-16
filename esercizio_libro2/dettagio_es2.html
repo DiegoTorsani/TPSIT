@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ comune.name }} - Dettaglio</title></head>
+<body>
+    <h1>{{ comune.name }}</h1>
+    <p><strong>Regione:</strong> {{ comune.regione }}</p>
+    <p><strong>Provincia:</strong> {{ comune.provincia }}</p>
+    <p><strong>Coordinate:</strong> {{ comune.lat }}, {{ comune.lng }}</p>
+
+    <hr>
+    <iframe 
+        width="600" height="450" frameborder="0" style="border:0"
+        src="https://maps.google.com/maps?q={{ comune.lat }},{{ comune.lng }}&z=15&output=embed">
+    </iframe>
+    
+    <br><br>
+    <a href="javascript:history.back()">Indietro</a>
+</body>
+</html>
