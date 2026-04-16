@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Esercizio 4 - Menu 6 opzioni</title>
+  <style>
+    span.zone { display:inline-block; min-width:180px; min-height:40px; border:1px solid #ccc; padding:4px; }
+  </style>
+</head>
+<body>
+  <h1>Esercizio 4</h1>
+  <p>Seleziona uno dei 6 indici dal menu per caricare il documento corrispondente nella <code>&lt;span&gt;</code> appropriata.</p>
+
+  <select id="sel6">
+    <option value="1">index1</option>
+    <option value="2">index2</option>
+    <option value="3">index3</option>
+    <option value="4">index4</option>
+    <option value="5">index5</option>
+    <option value="6">index6</option>
+  </select>
+
+  <p>
+    <span id="s1" class="zone">Span 1 (index1,index2)</span>
+    <span id="s2" class="zone">Span 2 (index3,index4)</span>
+    <span id="s3" class="zone">Span 3 (index5,index6)</span>
+  </p>
+
+  <script>
+    const mapping = {
+      1: 'index1.html',
+      2: 'index2.html',
+      3: 'index3.html',
+      4: 'index4.html',
+      5: 'index5.html',
+      6: 'index6.html'
+    };
+    function targetFor(n) {
+      n = Number(n);
+      if (n===1 || n===2) return document.getElementById('s1');
+      if (n===3 || n===4) return document.getElementById('s2');
+      return document.getElementById('s3');
+    }
+
+    async function loadInto(url, el) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(r.statusText);
+        el.innerHTML = await r.text();
+      } catch (e) {
+        el.innerHTML = `<pre style="color:red">Errore: ${e.message}</pre>`;
+      }
+    }
+
+    document.getElementById('sel6').addEventListener('change', (ev) => {
+      const v = ev.target.value;
+      const file = mapping[v];
+      const el = targetFor(v);
+      loadInto(file, el);
+    });
+
+    // carica default
+    document.getElementById('sel6').dispatchEvent(new Event('change'));
+  </script>
+</body>
+</html>

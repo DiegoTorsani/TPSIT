@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Esercizio 1 - Hover async load</title>
+  <style>
+    .zone { border: 1px solid #ccc; padding: 10px; min-height: 60px; margin: 8px 0; }
+    .trigger { color: blue; text-decoration: underline; cursor: pointer; margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Esercizio 1</h1>
+  <p>Posiziona il mouse sulle stringhe per caricare i documenti nelle due zone sottostanti:</p>
+  <div>
+    <span id="t1" class="trigger">Mostra documento A</span>
+    <span id="t2" class="trigger">Mostra documento B</span>
+  </div>
+
+  <div id="zone1" class="zone">Zona 1 (documento A)</div>
+  <div id="zone2" class="zone">Zona 2 (documento B)</div>
+
+  <script>
+    async function loadInto(url, el) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(r.statusText);
+        const html = await r.text();
+        el.innerHTML = html;
+      } catch (e) {
+        el.innerHTML = `<pre style="color:red">Errore: ${e.message}</pre>`;
+      }
+    }
+
+    document.getElementById('t1').addEventListener('mouseenter', () => {
+      loadInto('ex1_source1.html', document.getElementById('zone1'));
+    });
+    document.getElementById('t2').addEventListener('mouseenter', () => {
+      loadInto('ex1_source2.html', document.getElementById('zone2'));
+    });
+  </script>
+</body>
+</html>

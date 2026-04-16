@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Esercizio 2 - Menu a 3 opzioni</title>
+  <style>.zone { border:1px solid #ccc; padding:8px; min-height:60px; margin-top:6px; }</style>
+</head>
+<body>
+  <h1>Esercizio 2</h1>
+  <p>Seleziona un'opzione dal menu per caricare i tre documenti nelle tre zone:</p>
+  <select id="opt">
+    <option value="1">Opzione 1</option>
+    <option value="2">Opzione 2</option>
+    <option value="3">Opzione 3</option>
+  </select>
+
+  <div id="d1" class="zone">Div 1</div>
+  <div id="d2" class="zone">Div 2</div>
+  <div id="d3" class="zone">Div 3</div>
+
+  <script>
+    // Per semplicità: ogni opzione carica una diversa combinazione di 3 file
+    const combos = {
+      1: ['ex2_source1.html','ex2_source2.html','ex2_source3.html'],
+      2: ['ex2_source2.html','ex2_source3.html','ex2_source1.html'],
+      3: ['ex2_source3.html','ex2_source1.html','ex2_source2.html']
+    };
+
+    async function loadInto(url, el) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(r.statusText);
+        el.innerHTML = await r.text();
+      } catch (e) {
+        el.innerHTML = `<pre style="color:red">Errore: ${e.message}</pre>`;
+      }
+    }
+
+    document.getElementById('opt').addEventListener('change', (ev) => {
+      const sel = ev.target.value;
+      const files = combos[sel];
+      loadInto(files[0], document.getElementById('d1'));
+      loadInto(files[1], document.getElementById('d2'));
+      loadInto(files[2], document.getElementById('d3'));
+    });
+
+    // carica default
+    document.getElementById('opt').dispatchEvent(new Event('change'));
+  </script>
+</body>
+</html>

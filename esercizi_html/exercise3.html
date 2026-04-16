@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Esercizio 3 - Due liste con hover</title>
+  <style>
+    .zone { border:1px solid #ccc; padding:8px; min-height:60px; margin-top:6px; }
+    ul { list-style: none; padding:0; }
+    li { padding:4px; cursor:pointer; color:blue; text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <h1>Esercizio 3</h1>
+  <p>Hover su un elemento della prima o seconda lista per caricare il documento corrispondente nella zona appropriata.</p>
+
+  <div style="display:flex; gap:24px;">
+    <div>
+      <h3>Lista 1</h3>
+      <ul id="list1">
+        <li data-file="ex3_1.html">Elemento 1.1</li>
+        <li data-file="ex3_2.html">Elemento 1.2</li>
+        <li data-file="ex3_3.html">Elemento 1.3</li>
+        <li data-file="ex3_4.html">Elemento 1.4</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Lista 2</h3>
+      <ul id="list2">
+        <li data-file="ex3_5.html">Elemento 2.1</li>
+        <li data-file="ex3_6.html">Elemento 2.2</li>
+        <li data-file="ex3_7.html">Elemento 2.3</li>
+        <li data-file="ex3_8.html">Elemento 2.4</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Zone di visualizzazione</h3>
+  <div id="zoneA" class="zone">Zona per lista 1</div>
+  <div id="zoneB" class="zone">Zona per lista 2</div>
+
+  <script>
+    async function loadInto(url, el) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(r.statusText);
+        el.innerHTML = await r.text();
+      } catch (e) {
+        el.innerHTML = `<pre style="color:red">Errore: ${e.message}</pre>`;
+      }
+    }
+
+    document.querySelectorAll('#list1 li').forEach(li => {
+      li.addEventListener('mouseenter', () => loadInto(li.dataset.file, document.getElementById('zoneA')));
+    });
+    document.querySelectorAll('#list2 li').forEach(li => {
+      li.addEventListener('mouseenter', () => loadInto(li.dataset.file, document.getElementById('zoneB')));
+    });
+  </script>
+</body>
+</html>
