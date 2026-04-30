@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Ricerca Prodotti</title>
+    <script>
+        function cercaProdotto(event) {
+            event.preventDefault(); // Evita il ricaricamento della pagina
+            
+            const codice = document.getElementById("codiceProdotto").value;
+            const regex = /^[a-zA-Z]\d{3}$/; // Un carattere alfabetico seguito da 3 numeri
+
+            // a. verifica del formato (Regex)
+            // c. in caso di formato errato, mostra pop-up di errore
+            if (!regex.test(codice)) {
+                alert("Errore: il codice inserito non è nel formato corretto. Usa una lettera e tre numeri (es. A123).");
+                return;
+            }
+
+            // Richiesta asincrona GET al server in AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/prodotto?codice=${codice}`, true);
+            
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Inserimento diretto dell'HTML restituito dal server
+                        document.getElementById("risultato").innerHTML = xhr.responseText;
+                    } else if (xhr.status === 404) {
+                        // Pop-up che fa notare che il prodotto non esiste
+                        document.getElementById("risultato").innerHTML = "";
+                        alert(xhr.responseText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <h1>Ricerca Prodotto / Azienda Informatica</h1>
+    <form onsubmit="cercaProdotto(event)">
+        <label for="codiceProdotto">Inserisci codice prodotto:</label>
+        <input type="text" id="codiceProdotto" name="codiceProdotto" required>
+        <button type="submit">Cerca</button>
+    </form>
+
+    <div id="risultato" style="margin-top: 20px;"></div>
+</body>
+</html>
