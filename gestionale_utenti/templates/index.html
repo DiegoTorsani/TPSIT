@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionale Utenti</title>
+    <link rel="stylesheet" href="/gestionale_utenti/static/style.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">CRUD utenti</p>
+                <h1>Gestionale Utenti</h1>
+                <p class="subtitle">Lista, dettaglio, inserimento, modifica ed eliminazione con JSON, Flask e AJAX.</p>
+            </div>
+        </header>
+
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Lista utenti</h2>
+                <div class="search-row">
+                    <input type="text" id="searchInput" placeholder="Cerca per nome, cognome o mansione">
+                    <button id="searchButton" type="button">Cerca</button>
+                    <button id="resetButton" type="button" class="secondary">Reset</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Data di nascita</th>
+                            <th>Mansione</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="grid">
+            <div class="panel">
+                <h2>Inserisci nuovo utente</h2>
+                <form id="createForm" class="form-grid">
+                    <label>Nome<input type="text" name="nome" required></label>
+                    <label>Cognome<input type="text" name="cognome" required></label>
+                    <label>Data di nascita<input type="date" name="data_nascita" required></label>
+                    <label>Mansione<input type="text" name="mansione" required></label>
+                    <button type="submit">Salva utente</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Modifica utente</h2>
+                <form id="editForm" class="form-grid">
+                    <label>ID<input type="text" name="id" readonly></label>
+                    <label>Nome<input type="text" name="nome" required></label>
+                    <label>Cognome<input type="text" name="cognome" required></label>
+                    <label>Data di nascita<input type="date" name="data_nascita" required></label>
+                    <label>Mansione<input type="text" name="mansione" required></label>
+                    <button type="submit">Aggiorna utente</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Dettaglio utente</h2>
+            <div id="detailBox" class="detail-box">Seleziona un utente dalla lista.</div>
+            <div id="messageBox" class="message-box"></div>
+        </section>
+    </div>
+
+    <script src="/gestionale_utenti/static/app.js"></script>
+</body>
+</html>
